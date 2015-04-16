@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent" >  
+  
+    <TabHost  
+        android:id="@android:id/tabhost"  
+        android:layout_width="match_parent"  
+        android:layout_height="match_parent"  
+        android:layout_alignParentLeft="true"  
+        android:layout_alignParentBottom="true"  >  
+  
+        <LinearLayout  
+            android:layout_width="match_parent"  
+            android:layout_height="match_parent"  
+            android:orientation="vertical" >  
+  
+            <FrameLayout  
+                android:id="@android:id/tabcontent"  
+                android:layout_width="match_parent"  
+                android:layout_height="match_parent"  
+                android:layout_weight="1" >  
+<!-- 
+		首页
+-->
+						<LinearLayout 
+             					   android:id="@+id/tab1"
+                					android:orientation="vertical"
+                					android:layout_width="match_parent"
+                					android:layout_height="match_parent">
+               			<include layout="@layout/shouye" />
+               					 </LinearLayout>"
+<!-- 
+		排队
+-->
+				       	 <LinearLayout 
+             					   android:id="@+id/tab2"
+                					android:orientation="vertical"
+                					android:layout_width="match_parent"
+                					android:layout_height="match_parent">
+               			<LinearLayout 
+               			    		android:layout_width="match_parent"
+               			    		android:layout_height="match_parent"
+               			    		android:orientation="horizontal">
+               			    		
+               			 			<Spinner 
+                					    android:id="@+id/Spinner01"
+                					    android:layout_width="wrap_content"
+                					    android:layout_height="wrap_content"
+                					    android:entries="@array/college"
+                					    android:prompt="@string/spin_prompt01"
+                					    />
+					           
+				       	          
+				       	          		<Spinner 
+                					    android:id="@+id/Spinner02"
+                					    android:layout_width="wrap_content"
+                					    android:layout_height="wrap_content"
+                					    />   
+                					    
+               			    </LinearLayout>
+										
+                					
+                
+				       	 </LinearLayout>  
+<!-- 
+		广场
+-->				       	 
+				       	 <LinearLayout 
+             					   android:id="@+id/tab3"
+                					android:orientation="vertical"
+                					android:layout_width="match_parent"
+                					android:layout_height="match_parent">
+                		
+									<include layout="@layout/guangchang"/>		
+				       	     			                
+				       	 </LinearLayout>  
+<!-- 
+		我的
+-->			       	 
+				       	 <LinearLayout 
+             					   android:id="@+id/tab4"
+                					android:orientation="vertical"
+                					android:layout_width="match_parent"
+                					android:layout_height="match_parent">
+                		
+                					<TextView
+                						  	   android:layout_width="wrap_content"
+                							    android:layout_height="wrap_content"
+                							    android:text="@string/tab4"/>
+                					<Button 
+                					   android:id="@+id/visit1"
+                					   android:layout_width="wrap_content"
+                					   android:layout_height="wrap_content"
+                					   android:text="visit"/>
+                
+				       	 </LinearLayout>  
+                  
+            </FrameLayout>  
+  
+            <TabWidget  
+                android:id="@android:id/tabs"  
+                android:layout_width="match_parent"  
+                android:layout_height="wrap_content" >  
+            </TabWidget>  
+        </LinearLayout>  
+    </TabHost>  
+  
+</RelativeLayout>  

@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/test4"
+    >
+
+    <CheckBox
+        android:id="@+id/cB01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/num2"
+        android:layout_below="@+id/num2"
+        android:layout_marginTop="58dp"
+        android:text="@string/checkBox1" />
+
+    <CheckBox
+        android:id="@+id/cB02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/num2"
+        android:layout_alignTop="@+id/bt01"
+        android:layout_marginTop="32dp"
+        android:text="@string/checkBox2" />
+
+    <EditText
+        android:id="@+id/num1"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/num2"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="106dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="@string/tishi1"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/num2"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/num1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="@string/tishi2"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/bt01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/num2"
+        android:layout_alignTop="@+id/cB01"
+        android:layout_marginTop="17dp"
+        android:onClick="Listen_Button"
+        android:text="@string/button1" />
+
+</RelativeLayout>
