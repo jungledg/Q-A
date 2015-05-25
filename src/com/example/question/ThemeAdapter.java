@@ -3,7 +3,6 @@ package com.example.question;
 import java.util.List;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,16 +26,66 @@ public class ThemeAdapter extends ArrayAdapter<Theme>{
 		{
 			view = LayoutInflater.from(getContext()).inflate(resourceId, null);
 			viewHolder = new ViewHolder();
-			viewHolder.themeImage = (ImageView) view.findViewById(R.id.theme_image);
+			//viewHolder.themeImage = (ImageView) view.findViewById(R.id.theme_image);
 			viewHolder.themeName = (TextView) view.findViewById(R.id.theme_name);
+			viewHolder.themeName.setTextColor(viewHolder.themeName.getResources().getColor(R.drawable.white));
 			view.setTag(viewHolder);
 		}
 		else{
 			view =	convertView;
 			viewHolder = (ViewHolder) view.getTag();
 		}
-		viewHolder.themeImage.setImageResource(theme.getImageId());
+		switch(position)
+		{
+		case 0:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background14);
+			break;
+		case 1:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background1);
+			break;
+		case 2:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background2);
+			break;
+		case 3:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background3);
+			break;
+		case 4:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background4);
+			break;
+		case 5:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background5);
+			break;
+		case 6:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background6);
+			break;
+		case 7:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background7);
+			break;
+		case 8:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background8);
+			break;
+		case 9:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background9);
+			break;
+		case 10:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background10);
+			break;
+		case 11:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background11);
+			break;
+		case 12:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background12);
+			break;
+		case 13:
+			viewHolder.themeName.setBackgroundResource(R.drawable.background13);
+			break;
+		default:
+			break;
+		}
+		
+		//viewHolder.themeImage.setImageResource(theme.getImageId());
 		viewHolder.themeName.setText(theme.getname());
+		
 		return view;
 	}
 	

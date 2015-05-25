@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/Info_imageView1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        
+       
+        android:src="@drawable/ic_thumbnail_placeholder" />
+
+    <RelativeLayout
+        android:id="@+id/queue_Rel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+       >
+
+        <TextView
+            android:id="@+id/Info_lesson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="课程名" />
+
+        <TextView
+            android:id="@+id/Info_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/Info_lesson"
+            android:layout_alignLeft="@+id/Info_month"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="老师" />
+        
+        <TextView
+            android:id="@+id/Info_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+           android:layout_alignParentBottom="true"
+            android:text="地点" />
+
+        <TextView
+            android:id="@+id/Info_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Info_place"
+            android:layout_alignBottom="@+id/Info_place"
+            android:layout_toLeftOf="@+id/Info_day"
+            android:text="月份" />
+
+        <TextView
+            android:id="@+id/Info_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Info_month"
+            android:layout_alignBottom="@+id/Info_month"
+            android:layout_toLeftOf="@+id/imageView1"
+            android:text="日期" />
+
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/queue_icon_lineup" />
+
+        
+
+    </RelativeLayout>
+
+</LinearLayout>

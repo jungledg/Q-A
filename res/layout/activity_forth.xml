@@ -1,0 +1,65 @@
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <ImageView
+        android:id="@+id/Forth_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/background14" />
+
+    <Button
+        android:id="@+id/Forth_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/Forth_imageView"
+        android:text="老师" />
+
+    <TextView
+        android:id="@+id/Forth_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Forth_teacher"
+        android:textSize="18sp"
+        android:text="时间:" />
+
+    <TextView
+        android:id="@+id/Forth_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Forth_time"
+         android:textSize="18sp"
+        android:text="地点:" />
+
+    <TextView
+        android:id="@+id/Forth_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Forth_place"
+         android:textSize="18sp"
+        android:text="已排人数:" />
+
+    <Button
+        android:id="@+id/Forth_pai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/Forth_num"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/Forth_teacher"
+        android:text="排" />
+
+    
+    								
+</RelativeLayout>
+    
+    
+    

@@ -12,7 +12,12 @@
     <string name="tab2">排队</string>
     <string name="tab3">广场</string>
     <string name="tab4">我的</string>
+    <string name="name_mine">jungle</string>
+    <string name="school_mine">南京航空航天大学</string>
     <string name="spin_prompt01">学院 </string>
+    <string name="bt4_mine">邀请好友们 </string>
+    <string name="bt5_mine">感兴趣的课程 </string>
+    <string name="bt6_mine">设置 </string>
 
     <string-array name="college">
         <item> 全部 </item>
@@ -35,5 +40,7 @@
 
     <string name="title_activity_third">ThirdActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_my_info">答疑不用等</string>
+    <string name="title_activity_forth">ForthActivity</string>
 
 </resources>

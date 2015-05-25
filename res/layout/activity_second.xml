@@ -18,84 +18,60 @@
             <FrameLayout  
                 android:id="@android:id/tabcontent"  
                 android:layout_width="match_parent"  
-                android:layout_height="match_parent"  
+                android:layout_height="0dip"  
                 android:layout_weight="1" >  
 <!-- 
 		首页
 -->
+						
 						<LinearLayout 
-             					   android:id="@+id/tab1"
-                					android:orientation="vertical"
                 					android:layout_width="match_parent"
                 					android:layout_height="match_parent">
                			<include layout="@layout/shouye" />
-               					 </LinearLayout>"
+               					 </LinearLayout>
+               					
 <!-- 
 		排队
 -->
-				       	 <LinearLayout 
-             					   android:id="@+id/tab2"
-                					android:orientation="vertical"
+
+				       	 <LinearLayout
                 					android:layout_width="match_parent"
-                					android:layout_height="match_parent">
-               			<LinearLayout 
-               			    		android:layout_width="match_parent"
-               			    		android:layout_height="match_parent"
-               			    		android:orientation="horizontal">
-               			    		
-               			 			<Spinner 
-                					    android:id="@+id/Spinner01"
-                					    android:layout_width="wrap_content"
-                					    android:layout_height="wrap_content"
-                					    android:entries="@array/college"
-                					    android:prompt="@string/spin_prompt01"
-                					    />
-					           
-				       	          
-				       	          		<Spinner 
-                					    android:id="@+id/Spinner02"
-                					    android:layout_width="wrap_content"
-                					    android:layout_height="wrap_content"
-                					    />   
-                					    
-               			    </LinearLayout>
+                					android:layout_height="match_parent"
+                					>
+               				
+                					<include layout="@layout/paidui" />    
+               			    
 										
                 					
                 
-				       	 </LinearLayout>  
+				      </LinearLayout>  
+				       	
+				       	 
 <!-- 
 		广场
--->				       	 
+-->				       	
+
 				       	 <LinearLayout 
-             					   android:id="@+id/tab3"
-                					android:orientation="vertical"
                 					android:layout_width="match_parent"
                 					android:layout_height="match_parent">
                 		
 									<include layout="@layout/guangchang"/>		
 				       	     			                
 				       	 </LinearLayout>  
+				       	 
+				       	 
 <!-- 
 		我的
--->			       	 
+-->			  
+   	 
 				       	 <LinearLayout 
-             					   android:id="@+id/tab4"
-                					android:orientation="vertical"
                 					android:layout_width="match_parent"
                 					android:layout_height="match_parent">
-                		
-                					<TextView
-                						  	   android:layout_width="wrap_content"
-                							    android:layout_height="wrap_content"
-                							    android:text="@string/tab4"/>
-                					<Button 
-                					   android:id="@+id/visit1"
-                					   android:layout_width="wrap_content"
-                					   android:layout_height="wrap_content"
-                					   android:text="visit"/>
+                			<include layout="@layout/mine" />
+                					
                 
 				       	 </LinearLayout>  
-                  
+                
             </FrameLayout>  
   
             <TabWidget  

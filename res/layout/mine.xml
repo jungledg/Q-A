@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/mine" >
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="200dp" >
+        
+        <Button
+            android:id="@+id/bt_mine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true" 
+            android:drawableLeft="@drawable/mine_icon_portrait1"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+             android:onClick="Control_Bt"
+            />
+
+<!-- 
+        <ImageButton
+            android:id="@+id/imgBt_mine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/background16"
+            android:contentDescription="@string/app_name"
+            android:onClick="Control_Bt"
+            />
+     -->
+        </RelativeLayout>
+   
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/bt1_mine"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.00"
+            android:background="@drawable/dianping_text_frame" />
+
+        	<Button
+        	    android:id="@+id/bt2_mine"
+        	    android:layout_width="0dp"
+        	    android:layout_height="match_parent"
+        	    android:layout_weight="1.00" 
+        	       	    android:background="@drawable/dianping_text_frame"
+        	    />
+
+        	<Button
+        	    android:id="@+id/bt3_mine"
+        	    android:layout_width="0dp"
+        	    android:layout_height="match_parent"
+        	    android:layout_weight="1.00" 
+        	          	    android:background="@drawable/dianping_text_frame"
+        	    />
+        
+    </LinearLayout>
+
+    <Button 
+        android:id="@+id/invite_fr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt4_mine"
+        />
+    <Button 
+        android:id="@+id/interesting_le"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt5_mine"
+        />
+    <Button 
+        android:id="@+id/setting_mine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bt6_mine"
+        />
+    
+</LinearLayout>

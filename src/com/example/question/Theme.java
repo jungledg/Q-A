@@ -5,6 +5,11 @@ public class Theme {
 	private  int imageId;
 	private  String name;
 	
+	public Theme(String name)
+	{
+		this.name = name;
+	}
+	
 	
 	public Theme(int imageId,String name)
 	{

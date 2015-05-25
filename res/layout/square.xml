@@ -8,6 +8,7 @@
 	    android:id="@+id/square_image" 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
 	    />
 	
 	<TextView 
@@ -15,7 +16,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:singleLine="true"
-	    android:textSize="18sp"
+	    
 	    android:padding="15dp"/>
     	
 </LinearLayout>
