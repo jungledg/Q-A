@@ -6,10 +6,15 @@ import java.util.List;
 import com.example.question.R;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -28,39 +33,46 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 public class SecondActivity extends TabActivity {
 	
+	private static int flag = 0;
+	private String invite_number;
 	private TabHost tabHost=null;
 	private Spinner spinner01=null,spinner02=null;
 	private String[][] major=new String[][]{
-			{"È«²¿"},
-			{"·ÉĞĞÆ÷ÖÆÔì","·ÉĞĞÆ÷¶¯Á¦"},
-			{"ÄÜÔ´1","ÄÜÔ´2"},
-			{"×Ô¶¯»¯1","×Ô¶¯»¯2"},
-			{"µç×Ó1","µç×Ó2"},
-			{"»úµç1","»úµç2"},
-			{"²ÄÁÏ1","²ÄÁÏ2"},
-			{"·ÉĞĞ1","·ÉĞĞ2"},
-			{"ÊıÑ§","ÎïÀí"},
-			{"¾­¹Ü1","¾­¹Ü2"},
-			{"·¨ÂÉ","Éç»á"},
-			{"Ó¢Óï","ÈÕÓï"},
-			{"³ª¸è","ÌøÎè"},
-			{"º½Ìì1","º½Ìì2"},
-			{"¼ÆËã»ú¿ÆÑ§","Èí¼ş¹¤³Ì"},
-			{"¹ú½Ì1","¹ú½Ì2"},
+			{"å…¨éƒ¨"},
+			{"é£è¡Œå™¨è®¾è®¡","é£è¡Œå™¨åŠ¨åŠ›"},
+			{"èƒ½æº1","èƒ½æº2"},
+			{"è‡ªåŠ¨åŒ–1","è‡ªåŠ¨åŒ–2"},
+			{"ç”µå­ä¿¡æ¯1","ç”µå­ä¿¡æ¯2"},
+			{"æœºç”µ1","æœºç”µ2"},
+			{"ææ–™1","ææ–™2"},
+			{"é£è¡Œ1","é£è¡Œ2"},
+			{"æ•°å­¦","ç‰©ç†"},
+			{"ç»ç®¡1","ç»ç®¡2"},
+			{"æ³•å¾‹","å…¬å…³äº‹åŠ¡"},
+			{"å¤–å›½è¯­1","å¤–å›½è¯­2"},
+			{"è‰ºæœ¯1","è‰ºæœ¯2"},
+			{"èˆªå®‡1","èˆªå®‡2"},
+			{"è®¡ç®—æœºç§‘å­¦ä¸æŠ€æœ¯","ä¿¡æ¯å®‰å…¨","è½¯ä»¶å·¥ç¨‹","ç‰©è”ç½‘å·¥ç¨‹"},
+			{"å›½æ•™1","å›½æ•™2"},
 	};
 	private ArrayAdapter<CharSequence> adapter_major=null;
-	private List<Theme> themeList = new ArrayList<Theme>();					//¡°Ê×Ò³¡±µÄÊÊÅäÆ÷
-	private List<Line> lineList = new ArrayList<Line>();					//¡°ÅÅ¶Ó¡±µÄÊÊÅäÆ÷
-	private List<Square> squareList = new ArrayList<Square>();				//¡°¹ã³¡¡±µÄÊÊÅäÆ÷ 
-	ButtonMine buttonmine=null;												//ÎÒµÄ ×îÉÏµÄ°´Å¥
+	private List<Theme> themeList = new ArrayList<Theme>();					//é¦–é¡µ ä¸­çš„List
+	private List<Line> lineList = new ArrayList<Line>();					//é˜Ÿåˆ—ä¸­çš„item list
+	private List<Square> squareList = new ArrayList<Square>();				//å¹¿åœºä¸­çš„ list
+	ButtonMine buttonmine=null;												//æˆ‘çš„ ä¸­æˆ‘çš„ä¿¡æ¯æŒ‰é’®
 	private int count =0;
+	
+	//åˆå§‹åŒ– æˆ‘çš„ Info
+			int paidui_num=0;										//æ’é˜Ÿå·ç 
+			int lined_num=0;										//å·²æ’è¯¾ç¨‹
+			int credit_num=0;										//ä¿¡èª‰å€¼
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_second);
 		ActivityCollector.addActivity(this);
-		initTheme();														//³õÊ¼»¯¡°ÎÒµÄ¡±
-		initLine();															//³õÊ¼»¯"ÅÅ¶Ó"
-		initSquare();														//³õÊ¼»¯"¹ã³¡"
+		initTheme();														//åˆå§‹åŒ– é¦–é¡µ
+		initLine();															//åˆå§‹åŒ– æ’é˜Ÿ
+		initSquare();														//åˆå§‹åŒ– å¹¿åœº
 		
 		ThemeAdapter adapater_theme = new ThemeAdapter(SecondActivity.this, R.layout.theme, themeList);
 		LineAdapater adapter_queue = new LineAdapater(SecondActivity.this, R.layout.paidui, lineList);
@@ -68,35 +80,36 @@ public class SecondActivity extends TabActivity {
 		
 		
 		tabHost=getTabHost();
-		TabSpec tab1=tabHost.newTabSpec("tab1").setIndicator("Ê×Ò³").setContent(R.id.shouye);
+		TabSpec tab1=tabHost.newTabSpec("tab1").setIndicator("é¦–é¡µ").setContent(R.id.shouye);
 		tabHost.addTab(tab1);
-		TabSpec tab2=tabHost.newTabSpec("tab2").setIndicator("ÅÅ¶Ó").setContent(R.id.paidui);
+		TabSpec tab2=tabHost.newTabSpec("tab2").setIndicator("æ’é˜Ÿ").setContent(R.id.paidui);
 		tabHost.addTab(tab2);
-		TabSpec tab3=tabHost.newTabSpec("tab3").setIndicator("¹ã³¡").setContent(R.id.guangchang);
+		TabSpec tab3=tabHost.newTabSpec("tab3").setIndicator("å¹¿åœº").setContent(R.id.guangchang);
 		tabHost.addTab(tab3);
-		TabSpec tab4=tabHost.newTabSpec("tab4").setIndicator("ÎÒµÄ").setContent(R.id.mine);
+		TabSpec tab4=tabHost.newTabSpec("tab4").setIndicator("æˆ‘çš„").setContent(R.id.mine);
 		tabHost.addTab(tab4);
 		
-		int num = 0;
+		
+		
 		String InfoName = "jungle";
-		String InfoMajor = "Èí¼ş¹¤³Ì";
+		String InfoMajor = "è½¯ä»¶å·¥ç¨‹";	
 		Boolean InfoSex = false;
 		buttonmine=new ButtonMine(R.drawable.mine_icon_portrait, InfoName, InfoSex, InfoMajor);
-		View headview=getLayoutInflater().inflate(R.layout.headview, null); 				//"ÅÅ¶Ó"ÖĞµÄhead
-		//-------------------¡°ÅÅ¶Ó¡±ÖĞÁ½¸öÏÂÀ­¿Ø¼ş-------------------------
+		View headview=getLayoutInflater().inflate(R.layout.headview, null); 				//æ’é˜Ÿ  é‡Œè¾¹åŠ å…¥headview
+		//-------------------é˜Ÿåˆ—ä¸­çš„å­¦é™¢ä¸“ä¸šé€‰æ‹©-------------------------
 		spinner01 = (Spinner)headview.findViewById(R.id.spinner01);
 		spinner02=(Spinner) headview.findViewById(R.id.spinner02);
 		this.spinner01.setOnItemSelectedListener(new MySpinnerListener());
-		//--------------------¡°ÎÒµÄ¡±ÖĞÈı¸ö°´Å¥-----------------------------
-		Button bt1_mine=(Button) findViewById(R.id.bt1_mine);						//ÅÅ¶ÓºÅÂë			
-		Button bt2_mine=(Button) findViewById(R.id.bt2_mine);						//ÒÑÅÅ¿Î³Ì
-		Button bt3_mine=(Button) findViewById(R.id.bt3_mine);						//ĞÅÓşÖµ
+		//--------------------æˆ‘çš„  é‡Œè¾¹çš„ä¸‰ä¸ªæŒ‰é’®----------------------------
+		Button bt1_mine=(Button) findViewById(R.id.bt1_mine);						//			
+		Button bt2_mine=(Button) findViewById(R.id.bt2_mine);						//
+		Button bt3_mine=(Button) findViewById(R.id.bt3_mine);						//
 		Button bt_mine=(Button) findViewById(R.id.bt_mine);
 		bt_mine.setBackgroundResource(R.drawable.background17);
 		bt_mine.setText(buttonmine.getName()+"\n"+buttonmine.getMajor());
-		bt1_mine.setText(num+"\n"+"ÅÅ¶ÓºÅÂë");
-		bt2_mine.setText(num+"\n"+"ÒÑÅÅµÄ¿Î³Ì");
-		bt3_mine.setText(num+"\n"+"ĞÅÓşÖµ");
+		bt1_mine.setText(paidui_num+"\n"+"æ’é˜Ÿå·ç ");
+		bt2_mine.setText(lined_num+"\n"+"å·²æ’è¯¾ç¨‹");
+		bt3_mine.setText(credit_num+"\n"+"ä¿¡èª‰å€¼");
 		bt1_mine.setOnClickListener(new OnClickListener(){
 			
 			public void onClick(View v){
@@ -105,11 +118,20 @@ public class SecondActivity extends TabActivity {
 				startActivity(intent);
 			}
 		});
+		bt2_mine.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+																		//è¿™é‡Œå†™"å·²æ’è¯¾ç¨‹"çš„ç‚¹å‡»äº‹ä»¶
+			}
+		});
+		
 		
 		ListView listview_data = (ListView) findViewById(R.id.listView1);
 		ListView listview_queue = (ListView) findViewById(R.id.queue_listView2);
 		ListView listview_square = (ListView) findViewById(R.id.listview3);
-		listview_queue.addHeaderView(headview);                                           //¼ÓÈëheadview
+		listview_queue.addHeaderView(headview);                                           //åŠ å…¥headview
 		
 		listview_data.setAdapter(adapater_theme);
 		listview_queue.setAdapter(adapter_queue);
@@ -124,23 +146,24 @@ public class SecondActivity extends TabActivity {
 					long id) {
 				// TODO Auto-generated method stub
 				Theme theme =themeList.get(position);
+					flag = 1;
 					Intent intent2 = new Intent(SecondActivity.this,ThirdActivity.class);
-					int count1 = 0,count2 = 0;                 //count1¼ÇÂ¼µ±Ç°position£¬count2¼ÇÂ¼Í¬ÑùÃû³ÆµÄ¸öÊı
+					int count1 = 0,count2 = 0;                 //count1è®°å½•å½“å‰positionï¼Œcount2è®°å½•åŒæ ·åç§°çš„ä¸ªæ•°
 					
-					Line line=null;							//ÊµÏÖÔÚ¡°ÅÅ¶ÓÖĞ¡±ËÑË÷
-					line = lineList.get(count1);
+					Line line1=null;							//å®ç°åœ¨ â€œæ’é˜Ÿâ€ä¸­ æœç´¢  
+					line1 = lineList.get(count1);
 					while(true)		
 					{
 						Log.d("SecondActivity","hehe1");
-						if(line.getLesson()==theme.getname())
+						if(line1.getLesson()==theme.getname())
 						{
-							intent2.putExtra("name", line.getLesson());
-							intent2.putExtra("teacher", line.getTeacher());
-							intent2.putExtra("place", line.getPlace());
-							intent2.putExtra("month", line.getMonth());
-							intent2.putExtra("day", line.getDay());
-							intent2.putExtra("img", line.getImageId());
-							System.out.println(line.getTeacher());
+							intent2.putExtra("name", line1.getLesson());
+							intent2.putExtra("teacher", line1.getTeacher());
+							intent2.putExtra("place", line1.getPlace());
+							intent2.putExtra("month", line1.getMonth());
+							intent2.putExtra("day", line1.getDay());
+							intent2.putExtra("img", line1.getImageId());
+							System.out.println(line1.getTeacher());
 							count2++;
 						}
 						count1++;
@@ -148,11 +171,12 @@ public class SecondActivity extends TabActivity {
 						
 						if(count == count1)
 							break;
-						line = lineList.get(count1);
+						line1 = lineList.get(count1);
 					}
 						
 					intent2.putExtra("count", count2);
-					startActivity(intent2);
+					intent2.putExtra("flag", flag);
+					startActivityForResult(intent2, 1);
 			}
 			
 		});
@@ -166,69 +190,156 @@ public class SecondActivity extends TabActivity {
 				
 				Toast.makeText(getApplicationContext(),"yes", Toast.LENGTH_SHORT).show();
 				
+				flag = 2;
+				Intent intent3 = new Intent(SecondActivity.this,ThirdActivity.class);
+				
+				Line line2=null;							
+				line2 = lineList.get(position);
+	
+
+						intent3.putExtra("name", line2.getLesson());
+						intent3.putExtra("teacher", line2.getTeacher());
+						intent3.putExtra("place", line2.getPlace());
+						intent3.putExtra("month", line2.getMonth());
+						intent3.putExtra("day", line2.getDay());
+						intent3.putExtra("img", line2.getImageId());
+					
+				intent3.putExtra("flag", flag);
+				startActivityForResult(intent3,1);
+				
 			}
 			
 		});
 		
+		
+		
 	}
 	public void Control_Bt(View v)
 	{
-		Intent intent3 = new Intent(SecondActivity.this,MyInfoActivity.class);
-		intent3.putExtra("InFoName",buttonmine.getName());
-		intent3.putExtra( "InFoMajor",buttonmine.getMajor());
-		intent3.putExtra("InFoSex", buttonmine.getSex());
-		intent3.putExtra("InFoImage", buttonmine.getMimage());
-		startActivity(intent3);
+		Intent intent4 = new Intent(SecondActivity.this,MyInfoActivity.class);
+		intent4.putExtra("InFoName",buttonmine.getName());
+		intent4.putExtra( "InFoMajor",buttonmine.getMajor());
+		intent4.putExtra("InFoSex", buttonmine.getSex());
+		intent4.putExtra("InFoImage", buttonmine.getMimage());
+		startActivity(intent4);
 	}
    
+
+	public void Invite_bt(View v){
+	       startActivityForResult(new Intent(
+	                Intent.ACTION_PICK,ContactsContract.Contacts.CONTENT_URI), 0);
+	   }
+
+	    @Override
+	    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    	switch(requestCode){
+			case 1:															//------ç‚¹å‡»æ’é˜Ÿåè¿”å›çš„æ•°æ®
+				if(requestCode==1){
+		    		if(resultCode == RESULT_OK){
+						System.out.println("heheda01");
+						String place,teacher,lesson,month,day;
+						place=data.getStringExtra("result1_place");
+						teacher=data.getStringExtra("result1_teacher");
+						lesson=data.getStringExtra("result1_lesson");
+						month=data.getStringExtra("result1_month");
+						day=data.getStringExtra("result1_day");
+						lined_num=lined_num+1;
+						Button bt2_mine=(Button) findViewById(R.id.bt2_mine);	
+						bt2_mine.setText(lined_num+"\n"+"å·²æ’è¯¾ç¨‹");
+					}
+				}
+				break;
+			default:
+				 super.onActivityResult(requestCode, resultCode, data);				//------å¥½å‹é‚€è¯·
+			        if (resultCode == Activity.RESULT_OK) {
+			            ContentResolver reContentResolverol = getContentResolver();
+			             Uri contactData = data.getData();
+			            Cursor cursor = managedQuery(contactData, null, null, null, null);
+			             cursor.moveToFirst();
+			             invite_number = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+			            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+			            Cursor phone = reContentResolverol.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
+			                     null, 
+			                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, 
+			                     null, 
+			                     null);
+			             while (phone.moveToNext()) {
+			            	 invite_number = phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+			            	 
+			            	String content;
+			                SmsManager smsManager=SmsManager.getDefault();//è·å–ä¸€ä¸ªçŸ­ä¿¡ç®¡ç†å™¨
+			         		content="æ¬¢è¿ä½¿ç”¨ç­”ç–‘ä¸ç”¨ç­‰~~è¿™æ˜¯ä¸€æ¬¾å…è´¹æœåŠ¡äºæ•™å­¦çš„APP,ç‚¹å‡»ç«‹å³ä¸‹è½½www.xxx.com(æš‚æ—¶è¿˜æ²¡ä¸‹è½½åœ°å€o(â•¯â–¡â•°)o)";
+			         		List<String> invite_texts=smsManager.divideMessage(content);
+			         		for(String invite_text:invite_texts)
+			         		{
+			         			 Intent sendIntent = new Intent(Intent.ACTION_SENDTO);  
+			         		    sendIntent.setData(Uri.parse("smsto:" + invite_number));  
+			         		    sendIntent.putExtra("sms_body", invite_text);  
+			         		   startActivity(sendIntent);  
+			         		}
+			             }
+			             
+			         }
+			        break;
+			    }
+			}
+	    	
+	    	
+	       
 	
+	
+	
+	
+	
+	
+	//////////////-------------------
 	private void initTheme() {
-		Theme lisan = new Theme("ÀëÉ¢ÊıÑ§");
+		Theme lisan = new Theme("ç¦»æ•£æ•°å­¦");
 		themeList.add(lisan);
-		Theme gailvlun = new Theme("¸ÅÂÊÂÛ");
+		Theme gailvlun = new Theme("æ¦‚ç‡è®º");
 		themeList.add(gailvlun);
 		Theme cjiajia = new Theme("C++");
 		themeList.add(cjiajia);
-		Theme cyuyan = new Theme("CÓïÑÔ");
+		Theme cyuyan = new Theme("Cè¯­è¨€");
 		themeList.add(cyuyan);
-		Theme gaoshu = new Theme( "¸ßµÈÊıÑ§");
+		Theme gaoshu = new Theme( "é«˜ç­‰æ•°å­¦");
 		themeList.add(gaoshu);
-		Theme  shudian= new Theme("Êı×ÖµçÂ·");
+		Theme  shudian= new Theme("æ•°å­—ç”µè·¯");
 		themeList.add(shudian);
-		Theme shujujiegou = new Theme("Êı¾İ½á¹¹");
+		Theme shujujiegou = new Theme("æ•°æ®ç»“æ„");
 		themeList.add(shujujiegou);
-		Theme wuli = new Theme("´óÑ§ÎïÀí");
+		Theme wuli = new Theme("å¤§å­¦ç‰©ç†");
 		themeList.add(wuli);
-		Theme desgin = new Theme("Éè¼ÆÄ£Ê½");
+		Theme desgin = new Theme("è®¾è®¡æ¨¡å¼");
 		themeList.add(desgin);
-		Theme suanfa = new Theme("Ëã·¨·ÖÎö");
+		Theme suanfa = new Theme("ç®—æ³•åˆ†æ");
 		themeList.add(suanfa);
-		Theme jizu = new Theme("¼ÆËã»ú×é³ÉÔ­Àí");
+		Theme jizu = new Theme("è®¡ç®—æœºç»„æˆåŸç†");
 		themeList.add(jizu);
 	
 	}
 
 	private void initLine(){
-		Line num1 = new Line(R.drawable.ic_thumbnail_placeholder, "¼ÆËã»ú×é³ÉÔ­Àí","Ô¬´º·ç", "2102", "7ÔÂ", "2ÈÕ");
+		Line num1 = new Line(R.drawable.ic_thumbnail_placeholder, "è®¡ç®—æœºç»„æˆåŸç†","è¢æ˜¥é£", "2102", "7æœˆ", "2æ—¥");
 		System.out.println(num1.getTeacher()+"hehe");
 		lineList.add(num1);
-		Line num2 = new Line(R.drawable.ic_thumbnail_placeholder, "ÀëÉ¢ÊıÑ§","ÖÜÓÂ", "6101", "6ÔÂ", "11ÈÕ");
+		Line num2 = new Line(R.drawable.ic_thumbnail_placeholder, "ç¦»æ•£æ•°å­¦","å‘¨å‹‡", "3303", "6æœˆ", "11æ—¥");
 		lineList.add(num2);
-		Line num3 = new Line(R.drawable.ic_thumbnail_placeholder, "´óÑ§ÎïÀí","ÕÅÈı", "6101", "5ÔÂ", "11ÈÕ");
+		Line num3 = new Line(R.drawable.ic_thumbnail_placeholder, "å¤§å­¦ç‰©ç†","å¼ ä¸‰", "6101", "5æœˆ", "11æ—¥");
 		lineList.add(num3);
-		Line num4 = new Line(R.drawable.ic_thumbnail_placeholder, "¸ßµÈÊıÑ§","ÕÔËÄ", "6101", "5ÔÂ", "15ÈÕ");
+		Line num4 = new Line(R.drawable.ic_thumbnail_placeholder, "é«˜ç­‰æ•°å­¦","èµµå››", "6101", "5æœˆ", "15æ—¥");
 		lineList.add(num4);
-		Line num5 = new Line(R.drawable.ic_thumbnail_placeholder, "Êı×ÖµçÂ·","ÍõÎå", "6101", "6ÔÂ", "1ÈÕ");
+		Line num5 = new Line(R.drawable.ic_thumbnail_placeholder, "æ•°å­—ç”µè·¯","ç‹äº”", "6101", "6æœˆ", "1æ—¥");
 		lineList.add(num5);
-		Line num6 = new Line(R.drawable.ic_thumbnail_placeholder, "¸ÅÂÊÂÛ","Ğ¡Áù", "6101", "7ÔÂ", "5ÈÕ");
+		Line num6 = new Line(R.drawable.ic_thumbnail_placeholder, "æ¦‚ç‡è®º","å°å…­", "6101", "7æœˆ", "5æ—¥");
 		lineList.add(num6);
 		count = 6;
 		
 	}
 	private void initSquare(){
-		Square num1 = new Square(R.drawable.background10, "¡¾ÈÏÕæÌ¸¿Î¡¿½ÌÄãÈçºÎÉÏ¿Î²»×ßÉñ");
+		Square num1 = new Square(R.drawable.background10, "ä¸€å¤§æ³¢å­¦éœ¸æ¥è¢­~");
 		squareList.add(num1);
-		Square num2 = new Square(R.drawable.coffe02, "¡¾¹¥ÂÔ¡¿Ò»²¨Ñ§°ÔÀ´Ï®~");
+		Square num2 = new Square(R.drawable.background11, "ã€è°ˆå­¦ä¹ ã€‘è½»æ¾æŒæ¡çŸ¥è¯†çš„10ä¸ªå°æŠ€å·§");
 		squareList.add(num2);
 	}
 	
@@ -257,18 +368,23 @@ public class SecondActivity extends TabActivity {
 		getMenuInflater().inflate(R.menu.second, menu);
 		return true;
 	}
+	
+	
+
+	
+	
 	 public void onBackPressed(){
 	    	AlertDialog.Builder dialog1 = new AlertDialog.Builder(SecondActivity.this);
-	    	dialog1.setTitle("ÌáÊ¾");
-	    	dialog1.setMessage("È·¶¨ÒªÀë¿ªÂğ(¡Ñ_¡Ñ)£¿");
+	    	dialog1.setTitle("æç¤º");
+	    	dialog1.setMessage("ç¡®å®šè¦ç¦»å¼€å—(âŠ™_âŠ™)ï¼Ÿ");
 	    	dialog1.setCancelable(true);
-	    	dialog1.setPositiveButton("ÊÇµÄ", new DialogInterface.OnClickListener(){
+	    	dialog1.setPositiveButton("æ˜¯çš„", new DialogInterface.OnClickListener(){
 	    		public void onClick(DialogInterface dialog,int which){
 	    			ActivityCollector.finishAll();
 	    			
 	    		}
 	    	});
-	    	dialog1.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+	    	dialog1.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface arg0, int arg1) {
@@ -277,5 +393,8 @@ public class SecondActivity extends TabActivity {
 			});
 	    	dialog1.show();
 	    };
+	    
+	    
+	    
 
 }

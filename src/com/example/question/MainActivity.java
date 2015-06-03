@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 			Intent intent01=new Intent(this,SecondActivity.class);
 			this.startActivity(intent01);
 		}else{
-			Toast.makeText(MainActivity.this, "ÕËºÅÃÜÂë´íÎó£¡",Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "å¯†ç é”™è¯¯!",Toast.LENGTH_SHORT).show();
 		}
 		
 		

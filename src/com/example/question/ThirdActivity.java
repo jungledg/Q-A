@@ -16,6 +16,8 @@ import android.widget.ListView;
 public class ThirdActivity extends Activity {
 	
 	
+	int isLined=0;
+	
 	String place,lesson,teacher,month,day;
 	int imgId,count;
 	
@@ -34,7 +36,7 @@ public class ThirdActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.paidui);
 		
-		
+		isLined=0;
 		Intent i = getIntent();
 		
 		imgId=i.getExtras().getInt("img");
@@ -64,7 +66,7 @@ public class ThirdActivity extends Activity {
 				intent4.putExtra("place", place);
 				intent4.putExtra("month", month);
 				intent4.putExtra("day", day);
-				startActivity(intent4);
+				startActivityForResult(intent4,1);
 			}
 		});
 		
@@ -83,6 +85,36 @@ public class ThirdActivity extends Activity {
 		Line num1=new Line(imgId, lesson, teacher, place, month, day);
 		lineList.add(num1);
 	}
-	
+	protected void onActivityResult(int requestCode,int resultCode,Intent data1){										//重写onActivityForResult获得返回的数据
+		switch(requestCode){
+		case 1:
+			if(resultCode == RESULT_OK){
+				isLined=1;
+				System.out.println("heheda00");
+				place=data1.getStringExtra("result_place");
+				teacher=data1.getStringExtra("result_teacher");
+				lesson=data1.getStringExtra("result_lesson");
+				month=data1.getStringExtra("result_month");
+				day=data1.getStringExtra("result_day");
+				System.out.println("place="+place);
+				System.out.println(place+teacher+lesson+month+day);
+			}
+			break;
+		default:
+		}
+	}
+	public void onBackPressed(){
+		if(isLined==1){
+			Intent intent_result1 =new Intent();
+	        intent_result1.putExtra("result1_lesson",lesson);
+	        intent_result1.putExtra("result1_teacher", teacher);
+	        intent_result1.putExtra("result1_month", month);
+	        intent_result1.putExtra("result1_day", day);
+	        intent_result1.putExtra("result1_place", place);
+	        setResult(RESULT_OK,intent_result1);
+		}
+		
+        finish();
+	}
 
 }
